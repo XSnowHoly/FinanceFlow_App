@@ -5,3 +5,24 @@
 .btn {
   margin-top: 20px;
 }
+
+/* 默认样式 */
+.typeBox {
+  margin-bottom: 20px;
+  span {
+    display: inline-block;
+    padding: 6px;
+    font-size: 16px;
+    color: black;
+    margin-right: 10px;
+
+    /* 高亮样式 */
+    &.active {
+      font-size: 18px;
+      color: var(--za-theme-primary);
+      border-bottom: 3px solid;
+      border-bottom-color: var(--za-theme-primary);
+      /* 或者你想要的高亮颜色 */
+    }
+  }
+}

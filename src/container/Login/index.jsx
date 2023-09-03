@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { List, Input, Button } from 'zarm';
+import { List, Input, Button, Toast } from 'zarm';
 import CustomIcon from '@/components/CustomIcon';
 import s from './style.module.less';
-import { post } from '@/utils'
+import { post } from '@/utils';
 
 const Login = () => {
+  const [formType, setFormType] = useState('login');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -13,10 +14,12 @@ const Login = () => {
 
   const onLogin = async () => {
     setLoading(true);
-    const res = await post('/api/user/login', {username, password}).catch(() => {
-      setLoading(false);
-    });
-    if(res && res.data) {
+    const res = await post('/api/user/login', { username, password }).catch(
+      () => {
+        setLoading(false);
+      },
+    );
+    if (res && res.data) {
       localStorage.setItem('token', res.data.token);
       // 跳转到首页
       navigate('/');
@@ -24,10 +27,50 @@ const Login = () => {
     setLoading(false);
   };
 
+  const onRegister = async () => {
+    setLoading(true);
+    const res = await post('/api/user/register', { username, password }).catch(
+      () => {
+        setLoading(false);
+      },
+    );
+    if (res && res.code === 200) {
+      Toast.show(res.msg)
+      setTimeout(() => {
+        setFormType('login')
+      }, 2000)
+    }
+    setLoading(false);
+  };
+
+  // 登录或注册切换时重置面板
+  useEffect(() => {
+    setUsername('')
+    setPassword('')
+  }, [formType])
+
   return (
     <div>
       <h1>Login</h1>
       <div className={s.container}>
+        <div className={s.typeBox}>
+          <span
+            className={formType === 'login' ? s.active : ''}
+            onClick={() => {
+              setFormType('login');
+            }}
+          >
+            登录
+          </span>
+          <span
+            className={formType === 'register' ? s.active : ''}
+            onClick={() => {
+              setFormType('register');
+            }}
+          >
+            注册
+          </span>
+        </div>
         <List>
           <List.Item
             prefix={
@@ -69,9 +112,29 @@ const Login = () => {
             />
           </List.Item>
         </List>
-        <Button onClick={onLogin} loading={loading} className={s.btn} block theme="primary">
-          登录
-        </Button>
+        {formType === 'login' && (
+          <Button
+            onClick={onLogin}
+            loading={loading}
+            className={s.btn}
+            block
+            theme="primary"
+          >
+            登录
+          </Button>
+        )}
+
+        {formType === 'register' && (
+          <Button
+            onClick={onRegister}
+            loading={loading}
+            className={s.btn}
+            block
+            theme="primary"
+          >
+            注册
+          </Button>
+        )}
       </div>
     </div>
   );

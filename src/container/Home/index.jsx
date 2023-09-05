@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { get } from '@/utils';
 import dayjs from 'dayjs';
 import { DatePicker, Picker } from 'zarm';
+import BillCard from './BillCard';
 
 const now = dayjs();
 const startOfMonth = now.startOf('month');
@@ -30,11 +31,12 @@ const Home = () => {
   const [dateValue, setDateValue] = useState('');
   const [totalIncome, setTotalIncome] = useState('');
   const [totalExpense, setTotalExpense] = useState('');
+  const [billList, setBillList] = useState([]);
 
-  useEffect(() => {
-    // 获取数据
-    getData({});
-  }, []);
+  // useEffect(() => {
+  //   // 获取数据
+  //   getData({});
+  // }, []);
 
   useEffect(() => {
     // 账单类型或日期筛选条件变动
@@ -60,10 +62,14 @@ const Home = () => {
     });
     if (res && res.data) {
       console.log(res.data);
-      const { totalIncome: total_income, totalExpense: total_expense } =
-        res.data;
+      const {
+        totalIncome: total_income,
+        totalExpense: total_expense,
+        list,
+      } = res.data;
       setTotalIncome(total_income);
       setTotalExpense(total_expense);
+      setBillList(list);
     }
   };
 
@@ -106,6 +112,15 @@ const Home = () => {
         onSelectType={onSelectType}
         onSelectDate={onSelectDate}
       />
+      {billList.map((data, index) => (
+        <BillCard
+          key={index}
+          date={data.date}
+          totalIncome={data.totalIncome}
+          totalExpense={data.totalExpense}
+          bills={data.bills}
+        />
+      ))}
     </div>
   );
 };

@@ -44,20 +44,20 @@ const Home = () => {
     const query = {
       start_time: queryDate.startOf('month').unix(),
       end_time: queryDate.endOf('month').unix(),
-      type_id: typeValue[0],
+      pay_type: typeValue[0] === 'all'? '': typeValue[0],
     };
     getData(query);
   }, [typeValue, dateValue]);
 
   // 获取账单列表
-  const getData = async ({ start_time, end_time, type_id }) => {
+  const getData = async ({ start_time, end_time, pay_type }) => {
     const res = await get('/api/bill/get_list', {
       params: {
         start_time: start_time || monthStartTimestamp,
         end_time: end_time || monthEndTimestamp,
         page: 1,
         page_size: 5,
-        type_id,
+        pay_type,
       },
     });
     if (res && res.data) {

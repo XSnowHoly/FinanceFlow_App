@@ -4,6 +4,7 @@ import { get } from '@/utils';
 import dayjs from 'dayjs';
 import { DatePicker, Picker } from 'zarm';
 import BillCard from './BillCard';
+import PopupAdd from '@/components/PopupAdd';
 
 const now = dayjs();
 const startOfMonth = now.startOf('month');
@@ -121,6 +122,7 @@ const Home = () => {
           bills={data.bills}
         />
       ))}
+      <PopupAdd />
     </div>
   );
 };

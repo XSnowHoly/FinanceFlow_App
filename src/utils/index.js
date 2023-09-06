@@ -12,7 +12,7 @@ export const tagMap = {
   6: 'study',
   7: 'medical',
   8: 'travel',
-  9: 'duoren',
+  9: 'human',
   10: 'other',
   11: 'wage',
   12: 'bonus',
@@ -20,4 +20,26 @@ export const tagMap = {
   14: 'finance',
   15: 'refund',
   16: 'other'
+}
+
+export const tagExpenseMap = {
+  1: '餐饮',
+  2: '服饰',
+  3: '出行',
+  4: '日用',
+  5: '购物',
+  6: '学习',
+  7: '医疗',
+  8: '旅游',
+  9: '人情',
+  10: '其他',
+}
+
+export const tagIncomeMap = {
+  11: '工资',
+  12: '奖金',
+  13: '转账',
+  14: '金融',
+  15: '退款',
+  16: '其他'
 }

@@ -1,0 +1,67 @@
+.popupBody {
+
+  .addBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--za-theme-primary);
+
+    // 一点阴影效果
+    box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+
+    // 悬浮在右下角
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index: 999;
+  }
+}
+
+.popupBox {
+  padding-top: 10px;
+  background: #fff;
+  // min-height: 200px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.amount {
+  font-size: 28px;
+  font-weight: 700;
+  padding: 20px;
+}
+
+.tagBox {
+  margin-bottom: 20px;
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  padding-right: 10px;
+}
+
+.tabgItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 15px;
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #e5e5e5;
+  color: #797979;;
+
+  &.active {
+    background-color: var(--za-theme-primary);
+    color: #fff;
+  }
+}

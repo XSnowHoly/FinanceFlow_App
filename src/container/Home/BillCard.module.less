@@ -11,7 +11,8 @@
 
     .date {
       font-size: 16px;
-      color: #999;
+      color: #000;
+      font-weight: 600;
     }
 
     .statistics {
@@ -22,6 +23,17 @@
       .money {
         margin-left: 10px;
         color: #333;
+
+        .iconMoney {
+          display: inline-block;
+          width: 25px;
+          height: 25px;
+          line-height: 25px;
+          text-align: center;
+          background-color: var(--za-theme-primary);
+          margin-right: 6px;
+          border-radius: 50%;
+        }
       }
     }
   }
@@ -31,7 +43,7 @@
       padding: 10px;
       display: flex;
       justify-content: space-between;
-      border-bottom: 2px solid #ccc;
+      border-bottom: 2px solid #e2e2e2;
 
       .detail {
         .title {

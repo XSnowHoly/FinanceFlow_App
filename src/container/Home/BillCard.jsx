@@ -10,8 +10,14 @@ const BillCard = ({ date, totalIncome, totalExpense, bills = [] }) => {
       <div className={styles.header}>
         <div className={styles.date}>{date}</div>
         <div className={styles.statistics}>
-          <div className={styles.money}>{totalIncome}</div>
-          <div className={styles.money}>{totalExpense}</div>
+          <div className={styles.money}>
+            <span className={styles.iconMoney}>支</span>
+            <span>￥{totalExpense}</span>
+          </div>
+          <div className={styles.money}>
+            <span className={styles.iconMoney}>收</span>
+            <span>￥{totalIncome}</span>
+          </div>
         </div>
       </div>
       <div className={styles.content}>
@@ -28,10 +34,10 @@ const BillCard = ({ date, totalIncome, totalExpense, bills = [] }) => {
             </div>
             <div
               className={`${styles.cost} ${
-                data.pay_type === 1 && styles.income
+                data.pay_type === 2 && styles.income
               }`}
             >
-              {data.amount}
+              { data.pay_type === 2? '': '-' }{data.amount}
             </div>
           </div>
         ))}

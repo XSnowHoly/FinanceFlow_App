@@ -1,8 +1,8 @@
 import Header from './header';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { get } from '@/utils';
 import dayjs from 'dayjs';
-import { DatePicker, Picker } from 'zarm';
+import { DatePicker, Picker, Pull, List } from 'zarm';
 import BillCard from './BillCard';
 import PopupAdd from '@/components/PopupAdd';
 
@@ -12,6 +12,8 @@ const endOfMonth = now.endOf('month');
 const monthStartTimestamp = startOfMonth.unix();
 const monthEndTimestamp = endOfMonth.unix();
 const defaultDate = startOfMonth.format('YYYY/MM');
+
+let lock = false;
 
 const SINGLE_DATA = [
   { value: 'all', label: '全部类型' },
@@ -25,7 +27,26 @@ const TYPE_DATA_MAP = {
   2: '收入',
 };
 
+const REFRESH_STATE = {
+  normal: 0, // 普通
+  pull: 1, // 下拉刷新（未满足刷新条件）
+  drop: 2, // 释放立即刷新（满足刷新条件）
+  loading: 3, // 加载中
+  success: 4, // 加载成功
+  failure: 5, // 加载失败
+};
+
+const LOAD_STATE = {
+  normal: 0, // 普通
+  abort: 1, // 中止
+  loading: 2, // 加载中
+  success: 3, // 加载成功
+  failure: 4, // 加载失败
+  complete: 5, // 加载完成（无新数据）
+};
+
 const Home = () => {
+  const pullRef = useRef();
   const [type, setType] = useState('');
   const [typeValue, setTypeValue] = useState([]);
   const [date, setDate] = useState(defaultDate);
@@ -33,11 +54,65 @@ const Home = () => {
   const [totalIncome, setTotalIncome] = useState('');
   const [totalExpense, setTotalExpense] = useState('');
   const [billList, setBillList] = useState([]);
+  const [refreshing, setRefreshing] = useState(REFRESH_STATE.normal);
+  const [loading, setLoading] = useState(LOAD_STATE.normal);
+  const [currentPage, setCurrentPage] = useState(1); // 当前页码
+  const [totalPage, setTotalPage] = useState(0); // 总页数
 
-  // useEffect(() => {
-  //   // 获取数据
-  //   getData({});
-  // }, []);
+  const getBills = useCallback(async ({
+    start_time,
+    end_time,
+    pay_type,
+    page = 1,
+    page_size = 6,
+  }) => {
+    const res = await get('/api/bill/get_list', {
+      params: {
+        start_time: start_time || monthStartTimestamp,
+        end_time: end_time || monthEndTimestamp,
+        page,
+        page_size,
+        pay_type,
+      },
+    });
+    return res;
+  }, []);
+
+
+  // 获取账单列表
+  const getData = useCallback(
+    async (
+      { start_time, end_time, pay_type, page = 1},
+      { onSuccess, onError } = {},
+    ) => {
+      const res = await getBills({
+        start_time: start_time || monthStartTimestamp,
+        end_time: end_time || monthEndTimestamp,
+        page,
+        pay_type,
+      }).catch((err) => {
+        onError && onError(err);
+      });
+      if (res && res.data) {
+        const {
+          totalIncome: total_income,
+          totalExpense: total_expense,
+          list,
+          totalPages
+        } = res.data;
+          setTotalIncome(total_income);
+          setTotalExpense(total_expense);
+          setBillList(list);
+          setTotalPage(totalPages);
+          setCurrentPage(1);
+          setLoading(LOAD_STATE.normal)
+        onSuccess && onSuccess();
+        return;
+      }
+      onError && onError();
+    },
+    [getBills],
+  );
 
   useEffect(() => {
     // 账单类型或日期筛选条件变动
@@ -45,38 +120,76 @@ const Home = () => {
     const query = {
       start_time: queryDate.startOf('month').unix(),
       end_time: queryDate.endOf('month').unix(),
-      pay_type: typeValue[0] === 'all'? '': typeValue[0],
+      pay_type: typeValue[0] === 'all' ? '' : typeValue[0],
     };
     getData(query);
-  }, [typeValue, dateValue]);
+  }, [typeValue, dateValue, getData]);
 
   const onAddOk = () => {
     getData({});
-  }
-
-  // 获取账单列表
-  const getData = async ({ start_time, end_time, pay_type }) => {
-    const res = await get('/api/bill/get_list', {
-      params: {
-        start_time: start_time || monthStartTimestamp,
-        end_time: end_time || monthEndTimestamp,
-        page: 1,
-        page_size: 5,
-        pay_type,
-      },
-    });
-    if (res && res.data) {
-      console.log(res.data);
-      const {
-        totalIncome: total_income,
-        totalExpense: total_expense,
-        list,
-      } = res.data;
-      setTotalIncome(total_income);
-      setTotalExpense(total_expense);
-      setBillList(list);
-    }
   };
+
+  const loadMore = useCallback(async ({ onSuccess, onError } = {}) => {
+    // 账单类型或日期筛选条件变动
+    const queryDate = dayjs(dateValue);
+    const query = {
+      start_time: queryDate.startOf('month').unix(),
+      end_time: queryDate.endOf('month').unix(),
+      pay_type: typeValue[0] === 'all' ? '' : typeValue[0],
+    };
+    const res = await getBills({
+      ...query,
+      page: currentPage + 1,
+    }).catch(err => {
+      onError(err)
+    })
+    if (res && res.data) {
+      onSuccess(res);
+      return;
+    }
+    onError();
+  }, [currentPage, dateValue, getBills, typeValue])
+
+  // 模拟请求数据
+  const refreshData = () => {
+    setRefreshing(REFRESH_STATE.loading);
+    getData(
+      {},
+      {
+        onSuccess: () => setRefreshing(REFRESH_STATE.success),
+        onError: () => setRefreshing(REFRESH_STATE.failure),
+      },
+    );
+  };
+
+  // 模拟加载更多数据
+  const loadData = useCallback(() => {
+    if(lock) return;
+    lock = true; 
+    setLoading(LOAD_STATE.loading);
+    if(currentPage === totalPage) {
+      setLoading(LOAD_STATE.complete);
+      lock = false;
+      return;
+    }
+    loadMore(
+      {
+        onSuccess: (res) => {
+          setLoading(LOAD_STATE.success);
+          const {
+            list,
+          } = res.data;
+          setBillList([...billList, ...list]); // 加载更多
+          setCurrentPage(currentPage + 1);
+          lock = false;
+        },
+        onError: () => {
+          setLoading(LOAD_STATE.failure);
+          lock = false;
+        },
+      },
+    );
+  }, [currentPage, billList, loadMore, totalPage]);
 
   const onSelectType = async () => {
     // 调用Picker.prompt函数，传入参数：value，dataSource
@@ -117,15 +230,31 @@ const Home = () => {
         onSelectType={onSelectType}
         onSelectDate={onSelectDate}
       />
-      {billList.map((data, index) => (
-        <BillCard
-          key={index}
-          date={data.date}
-          totalIncome={data.totalIncome}
-          totalExpense={data.totalExpense}
-          bills={data.bills}
-        />
-      ))}
+      <Pull
+        ref={pullRef}
+        style={{ overflowY: 'auto', maxHeight: 500 }}
+        refresh={{
+          state: refreshing,
+          handler: refreshData,
+        }}
+        load={{
+          state: loading,
+          distance: 200,
+          handler: loadData,
+        }}
+      >
+        <List>
+          {billList.map((data, index) => (
+            <BillCard
+              key={index}
+              date={data.date}
+              totalIncome={data.totalIncome}
+              totalExpense={data.totalExpense}
+              bills={data.bills}
+            />
+          ))}
+        </List>
+      </Pull>
       <PopupAdd onAddOk={onAddOk} />
     </div>
   );

@@ -50,6 +50,10 @@ const Home = () => {
     getData(query);
   }, [typeValue, dateValue]);
 
+  const onAddOk = () => {
+    getData({});
+  }
+
   // 获取账单列表
   const getData = async ({ start_time, end_time, pay_type }) => {
     const res = await get('/api/bill/get_list', {
@@ -122,7 +126,7 @@ const Home = () => {
           bills={data.bills}
         />
       ))}
-      <PopupAdd />
+      <PopupAdd onAddOk={onAddOk} />
     </div>
   );
 };

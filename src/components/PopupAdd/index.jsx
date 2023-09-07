@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import CustomIcon from '@/components/CustomIcon';
 import s from './style.module.less';
-import { Popup, Radio, DatePicker, Keyboard } from 'zarm';
+import { Popup, Radio, DatePicker, Keyboard, Toast } from 'zarm';
 import dayjs from 'dayjs';
-import { tagMap, tagExpenseMap, tagIncomeMap } from 'utils';
+import { tagMap, tagExpenseMap, tagIncomeMap, post } from 'utils';
+import ProTypes from 'prop-types';
 
 const now = dayjs();
 
@@ -14,8 +15,8 @@ const DEFAULT_STYLE = {
   boxShadow: true,
 };
 
-const PopupAdd = () => {
-  const [payType, setPayType] = useState('');
+const PopupAdd = ({ onAddOk }) => {
+  const [payType, setPayType] = useState(1);
   const [visible, setVisible] = useState(false);
   const [date, setDate] = useState(new Date(now));
   const [amount, setAmount] = useState('');
@@ -27,7 +28,7 @@ const PopupAdd = () => {
 
   useEffect(() => {
     // payType 为支出 1 或收入 2 时改变tagNameMap 对应字段
-    setTagNameMap(payType === '1' ? tagExpenseMap : tagIncomeMap);
+    setTagNameMap(payType === 1 ? tagExpenseMap : tagIncomeMap);
   }, [payType]);
 
   // 添加按钮点击事件
@@ -58,7 +59,7 @@ const PopupAdd = () => {
   };
 
   // 监听输入框改变值
-  const handleMoney = (value) => {
+  const handleMoney = async (value) => {
     console.log(value);
     value = String(value);
     // 点击是删除按钮时
@@ -72,6 +73,18 @@ const PopupAdd = () => {
     if (value == 'ok') {
       // 这里后续将处理添加账单逻辑
       console.log(tagData);
+      const res = await post('/api/bill/add', {
+        pay_type: payType,
+        amount,
+        date: +date,
+        type_id: tagData.type_id,
+        type_name: tagData.type_name,
+      });
+      if (res && res.code === 200) {
+        Toast.show(res.msg);
+        setVisible(false)
+        onAddOk();
+      }
       return;
     }
 
@@ -111,8 +124,8 @@ const PopupAdd = () => {
               onChange={onSelectPayType}
               type="button"
             >
-              <Radio value="1">支出</Radio>
-              <Radio value="2">收入</Radio>
+              <Radio value={1}>支出</Radio>
+              <Radio value={2}>收入</Radio>
             </Radio.Group>
             <div onClick={onSelectDate}>{dayjs(date).format('YYYY/MM/DD')}</div>
           </div>
@@ -125,7 +138,9 @@ const PopupAdd = () => {
             {Object.entries(tagNameMap).map(([id, name]) => (
               <div
                 onClick={() => onTagClick(id, name)}
-                className={`${s.tabgItem} ${tagData.type_id === id ? s.active: ''}`}
+                className={`${s.tabgItem} ${
+                  tagData.type_id === id ? s.active : ''
+                }`}
                 key={id}
               >
                 <CustomIcon type={tagMap[id]} />
@@ -143,6 +158,10 @@ const PopupAdd = () => {
       </Popup>
     </div>
   );
+};
+
+PopupAdd.propTypes = {
+  onAddOk: ProTypes.func,
 };
 
 export default PopupAdd;

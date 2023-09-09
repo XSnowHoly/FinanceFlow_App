@@ -19,6 +19,7 @@ const PopupAdd = ({ onAddOk }) => {
     if (res && res.code === 200) {
       Toast.show(res.msg);
       addRef.current && addRef.current.hide();
+      addRef.current && addRef.current.resetState();
       onAddOk();
     }
   }

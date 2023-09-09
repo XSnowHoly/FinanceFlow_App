@@ -129,14 +129,19 @@ const Home = () => {
     getData({});
   };
 
-  const loadMore = useCallback(async ({ onSuccess, onError } = {}) => {
-    // 账单类型或日期筛选条件变动
-    const queryDate = dayjs(dateValue);
+  const getBaseQuery = (time_value, type_value) => {
+    const queryDate = dayjs(time_value);
     const query = {
       start_time: queryDate.startOf('month').unix(),
       end_time: queryDate.endOf('month').unix(),
-      pay_type: typeValue[0] === 'all' ? '' : typeValue[0],
+      pay_type: type_value[0] === 'all' ? '' : type_value[0],
     };
+    return query;
+  }
+
+  const loadMore = useCallback(async ({ onSuccess, onError } = {}) => {
+    // 账单类型或日期筛选条件变动
+    const query = getBaseQuery(dateValue, typeValue)
     const res = await getBills({
       ...query,
       page: currentPage + 1,
@@ -151,16 +156,17 @@ const Home = () => {
   }, [currentPage, dateValue, getBills, typeValue])
 
   // 模拟请求数据
-  const refreshData = () => {
+  const refreshData = useCallback(() => {
+    const query = getBaseQuery(dateValue, typeValue)
     setRefreshing(REFRESH_STATE.loading);
     getData(
-      {},
+      query,
       {
         onSuccess: () => setRefreshing(REFRESH_STATE.success),
         onError: () => setRefreshing(REFRESH_STATE.failure),
       },
     );
-  };
+  }, [dateValue, typeValue, getData]) 
 
   // 模拟加载更多数据
   const loadData = useCallback(() => {

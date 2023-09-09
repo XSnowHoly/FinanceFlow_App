@@ -2,7 +2,7 @@ import styles from './BillCard.module.less';
 import ProTypes from 'prop-types';
 import dayjs from 'dayjs';
 import CustomIcon from '@/components/CustomIcon';
-import { tagMap } from '@/utils'
+import { tagMap } from '@/utils';
 
 const BillCard = ({ date, totalIncome, totalExpense, bills = [] }) => {
   return (
@@ -25,11 +25,14 @@ const BillCard = ({ date, totalIncome, totalExpense, bills = [] }) => {
           <div className={styles.item} key={index}>
             <div className={styles.detail}>
               <div className={styles.title}>
-                <CustomIcon type={ tagMap[data.type_id] } />
+                <CustomIcon type={tagMap[data.type_id]} />
                 <span>{data.type_name}</span>
               </div>
               <div className={styles.time}>
-                {dayjs(new Date(Number(data.date))).format('HH:mm')}
+                <span>
+                  {dayjs(new Date(Number(data.date))).format('HH:mm')}
+                </span>
+                {data.remark && <span> | {data.remark}</span>}
               </div>
             </div>
             <div
@@ -37,7 +40,8 @@ const BillCard = ({ date, totalIncome, totalExpense, bills = [] }) => {
                 data.pay_type === 2 && styles.income
               }`}
             >
-              { data.pay_type === 2? '': '-' }{data.amount}
+              {data.pay_type === 2 ? '' : '-'}
+              {data.amount}
             </div>
           </div>
         ))}

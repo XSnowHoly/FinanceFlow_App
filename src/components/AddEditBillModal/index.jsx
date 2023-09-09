@@ -1,7 +1,7 @@
 import { useEffect, useState, forwardRef } from 'react';
 import dayjs from 'dayjs';
 import CustomIcon from '@/components/CustomIcon';
-import { Popup, Radio, DatePicker, Keyboard } from 'zarm';
+import { Popup, Radio, DatePicker, Keyboard, Input } from 'zarm';
 import { tagMap, tagExpenseMap, tagIncomeMap } from 'utils';
 import ProTypes from 'prop-types';
 import s from './style.module.less';
@@ -25,12 +25,33 @@ const AddEditBillModal = forwardRef(({ onConfirm }, ref) => {
     type_id: '',
     type_name: '',
   });
+  const [remarkVisible, setRemarkVisible] = useState(false);
+  const [remark, setRemark] = useState('');
 
-  if(ref) {
+  if (ref) {
     ref.current = {
       show: () => setVisible(true),
       hide: () => setVisible(false),
-    }
+      resetState: () => resetState(),
+    };
+  }
+
+  const resetState = () => {
+    setPayType(1);
+    setVisible(false);
+    setDate(new Date(now));
+    setAmount('');
+    setTagNameMap({});
+    setTagData({
+      type_id: '',
+      type_name: '',
+    });
+    setRemarkVisible(false);
+    setRemark('');
+  }
+
+  const showRemark = () => {
+    setRemarkVisible(true);
   }
 
   useEffect(() => {
@@ -81,6 +102,7 @@ const AddEditBillModal = forwardRef(({ onConfirm }, ref) => {
         date: +date,
         type_id: tagData.type_id,
         type_name: tagData.type_name,
+        remark
       };
       onConfirm(parms);
     }
@@ -134,6 +156,25 @@ const AddEditBillModal = forwardRef(({ onConfirm }, ref) => {
               <span>{name}</span>
             </div>
           ))}
+        </div>
+
+        <div className={s.remarkBox}>
+          {remarkVisible ? (
+            <Input
+              className={s.remark}
+              autoHeight
+              showLength
+              value={remark}
+              onChange={(e) => {
+                setRemark(e.target.value);
+              }}
+              rows={4}
+              maxLength={200}
+              placeholder="填写备注"
+            />
+          ) : (
+            <span className={s.remarkBtn} onClick={showRemark}>添加备注</span>
+          )}
         </div>
 
         <Keyboard type="price" style={DEFAULT_STYLE} onKeyClick={handleMoney} />

@@ -1,0 +1,45 @@
+.popupBox {
+  padding-top: 10px;
+  background: #fff;
+  // min-height: 200px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.amount {
+  font-size: 28px;
+  font-weight: 700;
+  padding: 20px;
+}
+
+.tagBox {
+  margin-bottom: 20px;
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  padding-right: 10px;
+}
+
+.tabgItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 15px;
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #e5e5e5;
+  color: #797979;;
+
+  &.active {
+    background-color: var(--za-theme-primary);
+    color: #fff;
+  }
+}

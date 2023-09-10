@@ -3,8 +3,15 @@ import ProTypes from 'prop-types';
 import dayjs from 'dayjs';
 import CustomIcon from '@/components/CustomIcon';
 import { tagMap } from '@/utils';
+import { useNavigate } from 'react-router-dom';
 
 const BillCard = ({ date, totalIncome, totalExpense, bills = [] }) => {
+  const navigateTo = useNavigate();
+
+  const goToDetails = (id) => {
+    navigateTo(`/details?id=${id}`);
+  };
+
   return (
     <div className={styles.card}>
       <div className={styles.header}>
@@ -22,7 +29,7 @@ const BillCard = ({ date, totalIncome, totalExpense, bills = [] }) => {
       </div>
       <div className={styles.content}>
         {bills.map((data, index) => (
-          <div className={styles.item} key={index}>
+          <div onClick={() => { goToDetails(data.id) }} className={styles.item} key={index}>
             <div className={styles.detail}>
               <div className={styles.title}>
                 <CustomIcon type={tagMap[data.type_id]} />

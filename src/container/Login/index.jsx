@@ -21,8 +21,11 @@ const Login = () => {
     );
     if (res && res.data) {
       localStorage.setItem('token', res.data.token);
-      // 跳转到首页
-      navigate('/');
+      Toast.show(res.msg);
+      setTimeout(() => {
+        // 跳转到首页
+        navigate('/');
+      }, 500);
     }
     setLoading(false);
   };
@@ -35,19 +38,19 @@ const Login = () => {
       },
     );
     if (res && res.code === 200) {
-      Toast.show(res.msg)
+      Toast.show(res.msg);
       setTimeout(() => {
-        setFormType('login')
-      }, 2000)
+        setFormType('login');
+      }, 2000);
     }
     setLoading(false);
   };
 
   // 登录或注册切换时重置面板
   useEffect(() => {
-    setUsername('')
-    setPassword('')
-  }, [formType])
+    setUsername('');
+    setPassword('');
+  }, [formType]);
 
   return (
     <div>

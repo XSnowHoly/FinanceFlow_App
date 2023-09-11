@@ -3,11 +3,19 @@ import { Toast } from 'zarm'
 
 const MODE = import.meta.env.MODE // 环境变量
 
+console.log('axios 初始化')
+
 axios.defaults.baseURL = MODE === 'development' ? '/api' : 'http://api.xxx'
 axios.defaults.withCredentials = true
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
-axios.defaults.headers['Authorization'] = `${localStorage.getItem('token') || null}`
 axios.defaults.headers.post['Content-Type'] = 'application/json'
+
+axios.interceptors.request.use(config => {
+  config.headers['Authorization'] = `${localStorage.getItem('token') || null}`
+  return config
+}, error => {
+  return Promise.reject(error)
+})
 
 axios.interceptors.response.use(res => {
   if (typeof res.data !== 'object') {

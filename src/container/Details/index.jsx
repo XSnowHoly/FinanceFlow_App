@@ -5,10 +5,12 @@ import { Modal, Toast } from 'zarm';
 import s from './style.module.less';
 import qs from 'query-string';
 import { post, get, tagMap } from '@/utils';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import dayjs from 'dayjs';
+import AddEditBillModal from '@/components/AddEditBillModal';
 
 const Details = () => {
+  const editRef = useRef(); // 编辑账单
   // 获取路由 id 参数
   const { id } = qs.parse(location.search);
   const navigateTo = useNavigate();
@@ -20,6 +22,23 @@ const Details = () => {
     type_name: '',
     remark: '',
   });
+
+  const onEdit = () => {
+    editRef.current && editRef.current.show();
+  }
+
+  const onConfirm = (data) => {
+    post('/api/bill/update', { id, ...data }).then(res => {
+      if (res && res.code === 200) {
+        Toast.show({ icon: 'success', content: res.msg });
+        setTimeout(() => {
+          navigateTo('/');
+        }, 500)
+      } else {
+        Toast.show({ icon: 'error', content: res.msg });
+      }
+    });
+  }
 
   const initDetails = useCallback(async () => {
     const res = await get('/api/bill/get_detail', { params: { id } });
@@ -75,12 +94,13 @@ const Details = () => {
             <CustomIcon type="delete" />
             <span>删除</span>
           </div>
-          <div className={s.edit}>
+          <div onClick={onEdit} className={s.edit}>
             <CustomIcon type="edit" />
             <span>编辑</span>
           </div>
         </div>
       </div>
+      <AddEditBillModal type='edit' data={details} onConfirm={onConfirm} ref={editRef} />
     </div>
   );
 };

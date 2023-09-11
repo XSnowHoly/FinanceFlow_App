@@ -15,7 +15,7 @@ const DEFAULT_STYLE = {
   boxShadow: true,
 };
 
-const AddEditBillModal = forwardRef(({ onConfirm }, ref) => {
+const AddEditBillModal = forwardRef(({ type = 'add', data, onConfirm }, ref) => {
   const [payType, setPayType] = useState(1);
   const [visible, setVisible] = useState(false);
   const [date, setDate] = useState(new Date(now));
@@ -27,6 +27,22 @@ const AddEditBillModal = forwardRef(({ onConfirm }, ref) => {
   });
   const [remarkVisible, setRemarkVisible] = useState(false);
   const [remark, setRemark] = useState('');
+
+  useEffect(() => {
+    if(type === 'edit') {
+      setPayType(data.pay_type);
+      setDate(new Date(+data.date));
+      setAmount(data.amount);
+      setTagData({
+        type_id: data.type_id,
+        type_name: data.type_name
+      });
+      if(data.remark) {
+        setRemark(data.remark);
+        setRemarkVisible(true);
+      }
+    }
+  }, [type, data])
 
   if (ref) {
     ref.current = {
@@ -148,7 +164,7 @@ const AddEditBillModal = forwardRef(({ onConfirm }, ref) => {
             <div
               onClick={() => onTagClick(id, name)}
               className={`${s.tabgItem} ${
-                tagData.type_id === id ? s.active : ''
+                Number(tagData.type_id) === Number(id) ? s.active : ''
               }`}
               key={id}
             >
@@ -186,6 +202,8 @@ const AddEditBillModal = forwardRef(({ onConfirm }, ref) => {
 AddEditBillModal.displayName = 'AddEditBillModal';
 
 AddEditBillModal.propTypes = {
+  type: ProTypes.string,
+  data: ProTypes.object,
   onConfirm: ProTypes.func,
 };
 

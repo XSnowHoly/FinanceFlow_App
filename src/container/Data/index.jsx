@@ -81,13 +81,15 @@ const Data = () => {
   };
 
   return (
-    <div className={s.selectDateWrap}>
+    <div className={s.dataWrap}>
       <div className={s.header}>
-        <SelectDate
-          columnType={['year', 'month']}
-          defaultValue={now}
-          onChange={onChnageDate}
-        />
+        <div className={s.selectDateComponent}>
+          <SelectDate
+            columnType={['year', 'month']}
+            defaultValue={now}
+            onChange={onChnageDate}
+          />
+        </div>
         <div className={s.moneyText}>共支出</div>
         <div className={`${s.moneyText} ${s.expenseText}`}>
           ￥{totalExpense}

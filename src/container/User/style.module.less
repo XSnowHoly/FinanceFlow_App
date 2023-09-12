@@ -1,0 +1,55 @@
+.userWrap {
+  background-color: #efefef;
+  height: 100%;
+
+  .header {
+    padding: 20px;
+    padding-bottom: 60px;
+    background-color: var(--za-theme-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .info {
+      color: #fff;
+
+      .nick {
+        border-radius: 4px;
+        padding: 6px;
+        background-color: #4c92ed;
+
+        .nickText {
+          margin-left: 6px;
+        }
+      }
+
+      .signature {
+        margin-top: 10px;
+      }
+    }
+
+    .imgBox {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  .actionsList {
+    position: relative;
+    top: -30px;
+    margin: 0 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .btnWrap {
+    position: absolute;
+    width: 100%;
+    bottom: 80px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    padding: 0 30px;
+  }
+}

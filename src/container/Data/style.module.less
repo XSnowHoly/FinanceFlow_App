@@ -1,0 +1,61 @@
+.selectDateWrap {
+  background-color: #ccc;
+
+  .header {
+    background-color: #fff;
+    padding: 10px;
+
+    .moneyText {
+      text-align: center;
+      margin-top: 20px;
+      color: var(--za-theme-primary);
+      font-size: 16px;
+    }
+
+    .expenseText {
+      font-size: 30px;
+    }
+
+    .incomeText {
+      color: #ccc;
+    }
+  }
+
+  .percentWrap {
+    margin-top: 10px;
+    background-color: #fff;
+    padding: 10px;
+
+    .titleWrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .titleText {
+        font-size: 20px;
+      }
+    }
+
+    .percentItem {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+
+      .amountType {
+        display: flex;
+        align-items: center;
+        width: 170px;
+
+        .amountText {
+          margin-left: 6px;
+        }
+      }
+
+      :global {
+        .za-progress__text {
+          width: 70px;
+        }
+      } 
+    }
+  }
+}

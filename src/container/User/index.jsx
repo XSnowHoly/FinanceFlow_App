@@ -3,8 +3,10 @@ import { Image, Button, List, Toast, Modal } from 'zarm';
 import s from './style.module.less';
 import { get } from '@/utils';
 import CustomIcon from '@/components/CustomIcon';
+import { useNavigate } from 'react-router-dom';
 
 const User = () => {
+  const navigateTo = useNavigate();
   const [userInfo, setUserInfo] = useState({});
 
   const getUserInfo = async () => {
@@ -52,13 +54,17 @@ const User = () => {
             hasArrow
             title="用户信息修改"
             prefix={<CustomIcon className={s.customIcon} type="edit" />}
-            onClick={() => {}}
+            onClick={() => {
+              navigateTo('/userInfo')
+            }}
           />
           <List.Item
             hasArrow
             title="重置密码"
             prefix={<CustomIcon className={s.passwordIcon} type="password" />}
-            onClick={() => {}}
+            onClick={() => {
+              navigateTo('/modifyPassword')
+            }}
           />
           <List.Item
             hasArrow

@@ -3,8 +3,6 @@ import { Toast } from 'zarm'
 
 const MODE = import.meta.env.MODE // 环境变量
 
-console.log('axios 初始化')
-
 axios.defaults.baseURL = MODE === 'development' ? '/api' : 'http://api.xxx'
 axios.defaults.withCredentials = true
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'

@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { DatePicker, Picker, Pull, List } from 'zarm';
 import BillCard from './BillCard';
 import PopupAdd from '@/components/PopupAdd';
+import s from './style.module.less';
 
 const now = dayjs();
 const startOfMonth = now.startOf('month');
@@ -64,7 +65,7 @@ const Home = () => {
     end_time,
     pay_type,
     page = 1,
-    page_size = 6,
+    page_size = 8,
   }) => {
     const res = await get('/api/bill/get_list', {
       params: {
@@ -227,7 +228,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className={s.homeWrap}>
       <Header
         totalIncome={totalIncome}
         totalExpense={totalExpense}
@@ -238,7 +239,7 @@ const Home = () => {
       />
       <Pull
         ref={pullRef}
-        style={{ overflowY: 'auto', maxHeight: 500 }}
+        style={{ overflowY: 'auto', flex: 1 }}
         refresh={{
           state: refreshing,
           handler: refreshData,

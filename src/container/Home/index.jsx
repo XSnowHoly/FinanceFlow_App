@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { DatePicker, Picker, Pull, List } from 'zarm';
 import BillCard from './BillCard';
 import PopupAdd from '@/components/PopupAdd';
+import CustomIcon from '@/components/CustomIcon';
 import s from './style.module.less';
 
 const now = dayjs();
@@ -251,6 +252,14 @@ const Home = () => {
         }}
       >
         <List>
+          {
+            billList.length === 0 && (
+              <div className={s.emptyWrap}>
+                <CustomIcon size="lg" type="empty" />
+                <p>暂无账单，现在记一笔吧~</p>
+              </div>
+            )
+          }
           {billList.map((data, index) => (
             <BillCard
               key={index}

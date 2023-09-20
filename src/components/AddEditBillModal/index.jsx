@@ -111,7 +111,6 @@ const AddEditBillModal = forwardRef(({ type = 'add', data, onConfirm }, ref) => 
     // 点击确认按钮时
     if (value == 'ok') {
       // 返回账单填写参数
-      console.log(tagData);
       const parms = {
         pay_type: payType,
         amount,
@@ -121,6 +120,7 @@ const AddEditBillModal = forwardRef(({ type = 'add', data, onConfirm }, ref) => 
         remark
       };
       onConfirm(parms);
+      return;
     }
 
     // 当输入的值为 '.' 且 已经存在 '.'，则不让其继续字符串相加。

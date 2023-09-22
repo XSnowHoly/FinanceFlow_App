@@ -14,9 +14,12 @@
 
     // 悬浮在右下角
     position: fixed;
-    bottom: 80px;
-    right: 20px;
-    z-index: 999;
+    cursor: move;
+    z-index: 1000;
+
+    .dragging {
+      opacity: 0.7;
+    }
   }
 }
 

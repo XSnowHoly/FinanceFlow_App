@@ -54,7 +54,7 @@ const Login = () => {
 
   return (
     <div>
-      <h1>Login</h1>
+      <div className={s.header}></div>
       <div className={s.container}>
         <div className={s.typeBox}>
           <span

@@ -30,6 +30,9 @@ axios.interceptors.response.use(res => {
   }
 
   return res.data
+}, error => {
+    Toast.show(error.message || '服务器异常!')
+    return Promise.reject(error)
 })
 
 export default axios

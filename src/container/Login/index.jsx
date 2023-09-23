@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { List, Input, Button, Toast } from 'zarm';
 import CustomIcon from '@/components/CustomIcon';
+import Captcha from "@/components/Captcha"
 import s from './style.module.less';
 import { post } from '@/utils';
 
@@ -9,11 +10,22 @@ const Login = () => {
   const [formType, setFormType] = useState('login');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [verify, setVerify] = useState(''); // 验证码
+  const [initCaptcha, setInitCaptcha] = useState('');
   const [loading, setLoading] = useState(false);
+  const captchaRef = useRef(null);
   const navigate = useNavigate();
 
   const onLogin = async () => {
     setLoading(true);
+
+    if(verify !== initCaptcha) {
+      Toast.show('验证码错误');
+      captchaRef.current.refreshCaptcha();
+      setLoading(false);
+      return;
+    }
+
     const res = await post('/api/user/login', { username, password }).catch(
       () => {
         setLoading(false);
@@ -32,6 +44,14 @@ const Login = () => {
 
   const onRegister = async () => {
     setLoading(true);
+
+    if(verify !== initCaptcha) {
+      Toast.show('验证码错误');
+      captchaRef.current.refreshCaptcha();
+      setLoading(false);
+      return;
+    }
+
     const res = await post('/api/user/register', { username, password }).catch(
       () => {
         setLoading(false);
@@ -106,13 +126,30 @@ const Login = () => {
           >
             <Input
               label="密码"
-              type="password"
-              placeholder="请输入您的密码"
+              placeholder="请输入密码"
               value={password}
               onChange={(e) => {
-                setPassword(e.target.value);
+                setVerify(e.target.value);
               }}
             />
+          </List.Item>
+          <List.Item
+            prefix={
+              <CustomIcon
+                type="password"
+                theme="primary"
+                style={{ fontSize: 24 }}
+              />
+            }
+          >
+            <Input
+              clearable
+              type="text"
+              label="验证码"
+              placeholder="请输入验证码"
+              onChange={(value) => setVerify(value)}
+            />
+            <Captcha ref={captchaRef} charNum={4} onChange={setInitCaptcha} />
           </List.Item>
         </List>
         {formType === 'login' && (

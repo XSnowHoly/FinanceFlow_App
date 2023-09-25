@@ -126,10 +126,11 @@ const Login = () => {
           >
             <Input
               label="密码"
+              type='password'
               placeholder="请输入密码"
               value={password}
               onChange={(e) => {
-                setVerify(e.target.value);
+                setPassword(e.target.value);
               }}
             />
           </List.Item>
@@ -147,7 +148,7 @@ const Login = () => {
               type="text"
               label="验证码"
               placeholder="请输入验证码"
-              onChange={(value) => setVerify(value)}
+              onChange={(e) => setVerify(e.target.value)}
             />
             <Captcha ref={captchaRef} charNum={4} onChange={setInitCaptcha} />
           </List.Item>

@@ -1,4 +1,4 @@
-import Header from './header';
+import Header from './Header';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { get } from '@/utils';
 import dayjs from 'dayjs';

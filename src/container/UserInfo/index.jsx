@@ -26,8 +26,8 @@ const UserInfo = () => {
 
   // 获取图片回调
   const handleSelect = (file) => {
-    if (file && file.file.size > 200 * 1024) {
-      Toast.show('上传头像不得超过 200 KB！！');
+    if (file && file.file.size > 300 * 1024) {
+      Toast.show('上传头像不得超过 300 KB！！');
       return;
     }
     let formData = new FormData();

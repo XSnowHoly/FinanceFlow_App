@@ -26,7 +26,6 @@ const UserInfo = () => {
 
   // 获取图片回调
   const handleSelect = (file) => {
-    console.log('file.file', file.file);
     if (file && file.file.size > 200 * 1024) {
       Toast.show('上传头像不得超过 200 KB！！');
       return;
@@ -37,7 +36,7 @@ const UserInfo = () => {
     // 通过 axios 设置  'Content-Type': 'multipart/form-data', 进行文件上传
     axios({
       method: 'post',
-      url: `${baseUrl}/upload`,
+      url: `${baseUrl}/api/upload`,
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',

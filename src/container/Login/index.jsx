@@ -28,6 +28,7 @@ const Login = () => {
 
     const res = await post('/api/user/login', { username, password }).catch(
       () => {
+        captchaRef.current.refreshCaptcha();
         setLoading(false);
       },
     );
@@ -55,12 +56,14 @@ const Login = () => {
     const res = await post('/api/user/register', { username, password }).catch(
       () => {
         setLoading(false);
+        captchaRef.current.refreshCaptcha();
       },
     );
     if (res && res.code === 200) {
       Toast.show(res.msg);
       setTimeout(() => {
         setFormType('login');
+        captchaRef.current.refreshCaptcha();
       }, 2000);
     }
     setLoading(false);

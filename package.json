@@ -20,6 +20,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.1",
     "react-router-dom": "^6.15.0",
+    "vconsole": "^3.15.1",
     "zarm": "^3.0.14"
   },
   "devDependencies": {

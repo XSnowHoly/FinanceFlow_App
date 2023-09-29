@@ -1,7 +1,7 @@
 import { useEffect, useState, forwardRef } from 'react';
 import dayjs from 'dayjs';
 import CustomIcon from '@/components/CustomIcon';
-import { Popup, Radio, DatePicker, Keyboard, Input } from 'zarm';
+import { Popup, Radio, DatePicker, Keyboard, Input, Toast } from 'zarm';
 import { tagMap, tagExpenseMap, tagIncomeMap } from 'utils';
 import ProTypes from 'prop-types';
 import s from './style.module.less';
@@ -57,7 +57,6 @@ const AddEditBillModal = forwardRef(({ type = 'add', data, onConfirm }, ref) => 
     setVisible(false);
     setDate(new Date(now));
     setAmount('');
-    setTagNameMap({});
     setTagData({
       type_id: '',
       type_name: '',
@@ -73,6 +72,7 @@ const AddEditBillModal = forwardRef(({ type = 'add', data, onConfirm }, ref) => 
   useEffect(() => {
     // payType 为支出 1 或收入 2 时改变tagNameMap 对应字段
     setTagNameMap(payType === 1 ? tagExpenseMap : tagIncomeMap);
+    setTagData({})
   }, [payType]);
 
   const onTagClick = (id, name) => {
@@ -111,6 +111,12 @@ const AddEditBillModal = forwardRef(({ type = 'add', data, onConfirm }, ref) => 
     // 点击确认按钮时
     if (value == 'ok') {
       // 返回账单填写参数
+
+      if(!tagData.type_id || !tagData.type_name) {
+        Toast.show('请选择账单分类');
+        return;
+      }
+
       const parms = {
         pay_type: payType,
         amount,

@@ -1,4 +1,6 @@
-# 记账本 (React)
+# 记了么记账本 (React)
+
+![页面展示](./src/assets/page.png)
 
 # 功能列表
 - [x] 用户注册、登录页

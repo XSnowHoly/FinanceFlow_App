@@ -2,6 +2,7 @@ import SelectDate from '@/components/SelectDate';
 import { useCallback, useEffect, useState } from 'react';
 import { get, tagMap } from '@/utils';
 import { Radio, Progress } from 'zarm';
+import 'zarm/es/button/style/index.css';
 import CustomIcon from '@/components/CustomIcon';
 import dayjs from 'dayjs';
 import s from './style.module.less';

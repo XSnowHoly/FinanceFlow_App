@@ -30,7 +30,7 @@ export default defineConfig({
       inject: {
         tags: [
           {
-            injectTo: 'body',
+            injectTo: 'head',
             tag: 'script',
             attrs: {
               src: 'https://cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.production.min.js',
@@ -38,7 +38,7 @@ export default defineConfig({
             },
           },
           {
-            injectTo: 'body',
+            injectTo: 'head',
             tag: 'script',
             attrs: {
               src: 'https://cdn.bootcdn.net/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js',
@@ -46,7 +46,7 @@ export default defineConfig({
             },
           },
           {
-            injectTo: 'body',
+            injectTo: 'head',
             tag: 'script',
             attrs: {
               src: 'https://cdn.bootcdn.net/ajax/libs/react-router-dom/6.15.0/react-router-dom.production.min.js',
@@ -54,7 +54,7 @@ export default defineConfig({
             },
           },
           {
-            injectTo: 'body',
+            injectTo: 'head',
             tag: 'script',
             attrs: {
               src: 'https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.min.js',

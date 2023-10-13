@@ -1,7 +1,7 @@
 import { lazy } from 'react';
+import Home from '@/container/Home';
 
 // 使用 lazy 函数导入路由组件
-const Home = lazy(() => import(/* webpackChunkName: "Home" */ '@/container/Home'));
 const Data = lazy(() => import(/* webpackChunkName: "Data" */ '@/container/Data'));
 const User = lazy(() => import(/* webpackChunkName: "User" */ '@/container/User'));
 const Login = lazy(() => import(/* webpackChunkName: "Login" */ '@/container/Login'));

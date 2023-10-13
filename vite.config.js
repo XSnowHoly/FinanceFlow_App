@@ -29,36 +29,33 @@ export default defineConfig({
       template: './index.html',
       inject: {
         tags: [
-          {
-            injectTo: 'head',
-            tag: 'script',
-            attrs: {
-              src: 'https://cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.production.min.js',
-              defer: true,
-            },
-          },
-          {
-            injectTo: 'head',
-            tag: 'script',
-            attrs: {
-              src: 'https://cdn.bootcdn.net/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js',
-              defer: true,
-            },
-          },
-          {
-            injectTo: 'head',
-            tag: 'script',
-            attrs: {
-              src: 'https://cdn.bootcdn.net/ajax/libs/react-router-dom/6.15.0/react-router-dom.production.min.js',
-              defer: true,
-            },
-          },
+          // {
+          //   injectTo: 'head',
+          //   tag: 'script',
+          //   attrs: {
+          //     src: 'https://cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.production.min.js',
+          //   },
+          // },
+          // {
+          //   injectTo: 'head',
+          //   tag: 'script',
+          //   attrs: {
+          //     src: 'https://cdn.bootcdn.net/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js',
+          //     defer: true,
+          //   },
+          // },
+          // {
+          //   injectTo: 'head',
+          //   tag: 'script',
+          //   attrs: {
+          //     src: 'https://cdn.bootcdn.net/ajax/libs/react-router-dom/6.15.0/react-router-dom.production.min.js',
+          //   },
+          // },
           {
             injectTo: 'head',
             tag: 'script',
             attrs: {
               src: 'https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.min.js',
-              defer: true,
             },
           },
         ],
@@ -70,9 +67,9 @@ export default defineConfig({
     rollupOptions: {
       plugins: [
         externalGlobals({
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          'react-router-dom': 'ReactRouterDOM',
+          // react: 'React',
+          // 'react-dom': 'ReactDOM',
+          // 'react-router-dom': 'ReactRouterDOM',
           'axios': 'axios'
         }),
       ],

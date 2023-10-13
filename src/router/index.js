@@ -1,10 +1,13 @@
-import Home from '@/container/Home'
-import Data from '@/container/Data'
-import User from '@/container/User'
-import Login from '@/container/Login'
-import Details from '@/container/Details'
-import UserInfo from '@/container/UserInfo'
-import ModifyPassword from '@/container/ModifyPassword'
+import { lazy } from 'react';
+
+// 使用 lazy 函数导入路由组件
+const Home = lazy(() => import(/* webpackChunkName: "Home" */ '@/container/Home'));
+const Data = lazy(() => import(/* webpackChunkName: "Data" */ '@/container/Data'));
+const User = lazy(() => import(/* webpackChunkName: "User" */ '@/container/User'));
+const Login = lazy(() => import(/* webpackChunkName: "Login" */ '@/container/Login'));
+const Details = lazy(() => import(/* webpackChunkName: "Details" */ '@/container/Details'));
+const UserInfo = lazy(() => import(/* webpackChunkName: "UserInfo" */ '@/container/UserInfo'));
+const ModifyPassword = lazy(() => import(/* webpackChunkName: "ModifyPassword" */ '@/container/ModifyPassword'));
 
 const routes = [
   {

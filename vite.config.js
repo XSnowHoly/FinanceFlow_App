@@ -3,6 +3,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { createStyleImportPlugin } from 'vite-plugin-style-import';
+import { manualChunksPlugin } from 'vite-plugin-webpackchunkname';
+// import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,6 +21,8 @@ export default defineConfig({
         },
       ],
     }),
+    // visualizer(),
+    manualChunksPlugin(),
   ],
   css: {
     modules: {
@@ -41,7 +45,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://192.168.31.213:7001',
+        target: 'http://finance.xsnowholy.top',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

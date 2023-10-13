@@ -56,6 +56,7 @@ export default defineConfig({
             tag: 'script',
             attrs: {
               src: 'https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.min.js',
+              defer: true,
             },
           },
         ],

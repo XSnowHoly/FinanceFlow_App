@@ -1,7 +1,7 @@
 import React from 'react';
 import App from './App.jsx';
 import 'lib-flexible/flexible';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css'
 

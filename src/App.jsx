@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom';
 import routes from './router';
 import { ConfigProvider } from 'zarm';
@@ -26,7 +26,6 @@ function App() {
   return (
       <>
         <ConfigProvider locale={zhCN}>
-        <Suspense fallback={<div>Loading...</div>} >
           <Routes>
             {routes.map((route) => {
               return (
@@ -39,7 +38,6 @@ function App() {
               );
             })}
           </Routes>
-        </Suspense>
         </ConfigProvider>
         <NavBar showNav={showNavBar} />
       </>

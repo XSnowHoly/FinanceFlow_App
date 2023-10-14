@@ -3,7 +3,6 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { createStyleImportPlugin } from 'vite-plugin-style-import';
-import { manualChunksPlugin } from 'vite-plugin-webpackchunkname';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import externalGlobals from 'rollup-plugin-external-globals';
 // import { visualizer } from "rollup-plugin-visualizer";
@@ -12,6 +11,8 @@ import externalGlobals from 'rollup-plugin-external-globals';
 export default defineConfig({
   plugins: [
     react(),
+    // visualizer(),
+    // manualChunksPlugin(),
     createStyleImportPlugin({
       libs: [
         {
@@ -23,8 +24,6 @@ export default defineConfig({
         },
       ],
     }),
-    // visualizer(),
-    manualChunksPlugin(),
     createHtmlPlugin({
       template: './index.html',
       inject: {
@@ -74,6 +73,19 @@ export default defineConfig({
           'axios': 'axios'
         }),
       ],
+      output: {
+        entryFileNames: `entry/[name][hash].js`,
+        chunkFileNames: `chunk/[name][hash].js`,
+        assetFileNames: `assets/[name][hash].[ext]`,
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            return "vendor" //代码分割为第三方包
+          }
+          if (id.includes("src/container")) {
+            return "container-modules" //代码分割为业务模块
+          }
+        }
+      }
     },
   },
   css: {

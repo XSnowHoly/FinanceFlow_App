@@ -2,7 +2,7 @@ import s from './Header.module.less';
 import ProTypes from 'prop-types';
 import CustomIcon from '@/components/CustomIcon'
 
-const Header = ({ totalIncome, totalExpense, type, date,  onSelectType, onSelectDate }) => {
+const Header = ({ totalIncome = '0.00', totalExpense = '0.00', type, date,  onSelectType, onSelectDate }) => {
   return (
     <div className={s.headerBody}>
       <div className={s.top}>

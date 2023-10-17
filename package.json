@@ -9,14 +9,15 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prepare": "husky install",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "cz": "git-cz",
+    "commitlint": "commitlint --edit"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,less}": [
       "eslint --fix",
       "stylelint --fix",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "dependencies": {
@@ -33,9 +34,14 @@
     "zarm": "^3.0.14"
   },
   "devDependencies": {
+    "@commitlint/cli": "17.8.0",
+    "@commitlint/config-conventional": "^17.8.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
+    "commitizen": "4.3.0",
+    "commitlint-config-cz": "0.13.3",
+    "cz-customizable": "^7.0.0",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-react": "^7.32.2",
@@ -55,5 +61,13 @@
     "vite-plugin-html": "^3.2.0",
     "vite-plugin-style-import": "^2.0.0",
     "vite-plugin-webpackchunkname": "^0.2.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./.cz-config.cjs"
+    }
   }
 }

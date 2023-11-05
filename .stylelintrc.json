@@ -13,10 +13,9 @@
       }
     ]
   },
-  "overrides": [
-    {
-      "files": ["**/*.less"],
-      "customSyntax": "postcss-less"
-    }
-  ]
+  "ignoreFiles": ["**/*.js"],
+  "overrides": [{
+    "files": ["**/*.less"],
+    "customSyntax": "postcss-less"
+  }]
 }
